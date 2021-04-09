@@ -1,6 +1,6 @@
 import unittest  # Importing the unittest module
 from credential import Credential  # Importing the credential class
-
+import pyperclip
 
 class TestCredential(unittest.TestCase):
     """
@@ -48,7 +48,7 @@ class TestCredential(unittest.TestCase):
             objects to our credential_list
             """
         self.new_credential.save_credential()
-        test_credential = Credential("name", "username", "passcode")  # new credential
+        test_credential = Credential("application", "username", "passcode")  # new credential
         test_credential.save_credential()
         self.assertEqual(len(Credential.credential_list), 2)
 
@@ -57,7 +57,7 @@ class TestCredential(unittest.TestCase):
             test_delete_credential to test if we can remove a credential from our credential list
             """
         self.new_credential.save_credential()
-        test_credential = Credential("name", "username", "passcode")  # new credential
+        test_credential = Credential("application", "username", "passcode")  # new credential
         test_credential.save_credential()
 
         self.new_credential.delete_credential()  # Deleting a credential object
@@ -70,18 +70,42 @@ class TestCredential(unittest.TestCase):
 
         self.assertEqual(Credential.display_credential(), Credential.credential_list)
         
+    def test_find_credential_by_application(self):
+        '''
+        test to check if we can find a credential by the application name and display information
+        '''
+
+        self.new_credential.save_credential()
+        test_credential = Credential("application", "username", "passcode") # new credential
+        test_credential.save_credential()
+
+        found_credential = Credential.find_by_application("application")
+
+        self.assertEqual(found_credential.account_username,test_credential.account_username)
+    
+        
     def test_credential_exists(self):
         '''
         test to check if we can return a Boolean  if we cannot find the credential.
         '''
 
         self.new_credential.save_credential()
-        test_credential = Credential("name", "username", "passcode") # new credential
+        test_credential = Credential("application", "username", "passcode") # new credential
         test_credential.save_credential()
 
-        credential_exists = Credential.credential_exist("username")
+        credential_exists = Credential.credential_exist("application")
 
-        self.assertTrue(credential_exists)    
+        self.assertTrue(credential_exists) 
+        
+    # def test_copy_email(self):
+    #     '''
+    #     Test to confirm that we are copying the email address from a found credential
+    #     '''
+
+    #     self.new_credential.save_credential()
+    #     Credential.copy_application("username")
+
+    #     self.assertEqual(self.new_credential.application,pyperclip.paste())   
 
 
 if __name__ == '__main__':
