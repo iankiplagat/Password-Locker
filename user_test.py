@@ -64,11 +64,35 @@ class TestUser(unittest.TestCase):
             test_user = User("Test","user","0700000000","test@user.com","name","password") # new user
             test_user.save_user()
 
-            self.new_user.delete_user()# Deleting a contact object
+            self.new_user.delete_user()# Deleting a user object
             self.assertEqual(len(User.user_list),1)
-if __name__ == '__main__':
-    unittest.main()
 
+    def test_find_user_by_number(self):
+        '''
+        test to check if we can find a user by phone number and display information
+        '''
+
+        self.new_user.save_user()
+        test_user = User("Test","user","0700000000","test@user.com","name","password") # new user
+        test_user.save_user()
+
+        found_user = User.find_by_number("0700000000")
+
+        self.assertEqual(found_user.email,test_user.email)
+
+    def test_user_exists(self):
+        '''
+        test to check if we can return a Boolean  if we cannot find the user.
+        '''
+
+        self.new_user.save_user()
+        test_user = User("Test","user","0700000000","test@user.com","name","password") # new user
+        test_user.save_user()
+
+        user_exists = User.user_exist("0700000000")
+
+        self.assertTrue(user_exists)
+        
 
 if __name__ == '__main__':
     unittest.main()
