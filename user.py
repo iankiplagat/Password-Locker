@@ -3,9 +3,10 @@ class User:
     Class that generates new instances of users.
     """
 
-    def __init__(self, user_name, user_password):
+    def __init__(self, name, user_name, user_password):
         # docstring removed for simplicity
 
+        self.name = name
         self.user_name = user_name
         self.user_password = user_password
 
