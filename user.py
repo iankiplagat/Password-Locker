@@ -3,11 +3,11 @@ class User:
     Class that generates new instances of users.
     """
 
-    def __init__(self, name, user_name, user_password):
+    def __init__(self, name, login, user_password):
         # docstring removed for simplicity
 
         self.name = name
-        self.user_name = user_name
+        self.login = login
         self.user_password = user_password
 
     user_list = []  # Empty user list
@@ -26,6 +26,7 @@ class User:
         """
 
         User.user_list.remove(self)
+    
 
     @classmethod
     def display_user(cls):
