@@ -16,11 +16,11 @@ def save_user(user):
     '''
     user.save_user() 
     
-# def login_user(login,password):
-#     """
-#     function that checks whether a user exists and then logs the user in.
-#     """
-    
+def login_user(login,password):
+    """
+    function that checks whether a user exists and then logs the user in.
+    """
+    return User.user_exists(login,password)
     
 def del_user(user):
     '''
@@ -127,9 +127,9 @@ def main():
                             login = input("Username: ")
                             password = input("Password: ")
                             # login = login_user(login,password)
-                            # if login_user == login:
-                                # print(f"Hello {login}.Welcome to your Kit Locker acount")  
-                                # print('\n')   
+                            if login_user(login,password):
+                               print("Login Successful 😊")
+                               print('\n')   
                                 
                                 
                     while True:

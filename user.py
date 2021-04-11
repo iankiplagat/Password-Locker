@@ -26,6 +26,20 @@ class User:
         """
 
         User.user_list.remove(self)
+        
+    @classmethod
+    def user_exists(cls, login,password):
+      '''
+      confirm user details in the users_list to authenticate access
+  
+      Args:
+      username: name keyed in by user to login
+      password: password used by user to login
+      '''
+      for user in User.user_list:
+        if login == login and user.password == password:
+          return True
+      return False    
     
 
     @classmethod

@@ -2,7 +2,7 @@
 
 This project was generated using python language.
 
-#Author
+# Author
 
 [Ian Kiplagat](https://github.com/kasparov-creat/)
 
