@@ -36,11 +36,10 @@ class User:
       username: name keyed in by user to login
       password: password used by user to login
       '''
-      for user in User.user_list:
-        if login == login and user.password == password:
-          return True
-      return False    
-    
+      for user in cls.user_list:
+        if user.login == login and user.user_password == password:
+          return user
+        
 
     @classmethod
     def display_user(cls):

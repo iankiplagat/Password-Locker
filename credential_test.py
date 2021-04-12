@@ -62,6 +62,15 @@ class TestCredential(unittest.TestCase):
 
         self.new_credential.delete_credential()  # Deleting a credential object
         self.assertEqual(len(Credential.credential_list), 1)
+        
+    def test_generate_passcode(self):
+        '''
+        Test case to test random password generation
+        '''
+        
+        generated_passcode = self.new_credential.generate_passcode()
+
+        self.assertEqual( len(generated_passcode), 8 )       
 
     def test_display_all_credential(self):
         """
@@ -97,15 +106,15 @@ class TestCredential(unittest.TestCase):
 
         self.assertTrue(credential_exists) 
         
-    # def test_copy_email(self):
-    #     '''
-    #     Test to confirm that we are copying the email address from a found credential
-    #     '''
+    def test_copy_account_username(self):
+        '''
+        Test to confirm that we are copying the username from a found credential
+        '''
 
-    #     self.new_credential.save_credential()
-    #     Credential.copy_application("username")
+        self.new_credential.save_credential()
+        Credential.copy_account_username("application")
 
-    #     self.assertEqual(self.new_credential.application,pyperclip.paste())   
+        self.assertEqual(self.new_credential.account_username,pyperclip.paste())   
 
 
 if __name__ == '__main__':

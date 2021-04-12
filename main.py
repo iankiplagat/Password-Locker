@@ -47,7 +47,7 @@ def save_credential(credential):
     '''
     credential.save_credential() 
     
-def del_credential(credential):
+def delete_credential(credential):
     '''
     Function to delete user credentials
     '''
@@ -57,13 +57,13 @@ def find_credential(application):
     '''
     Function that finds a user account credential by the application name and returns the credential
     '''
-    return Credential.find_by_application(application) 
+    return Credential.find_by_application_name(application) 
   
 def check_existing_credential(application):
     '''
     Function that check if a user account exists with that application name and return a Boolean
     '''
-    return Credential.credential_exist("application")    
+    return Credential.credential_exist(application)    
     
 def display_credential():
     '''
@@ -71,6 +71,15 @@ def display_credential():
     '''
     return Credential.display_credential()      
     
+def create_generated_passcode(name):
+    '''
+    Function that generates a passcode for the user account 
+    Args:
+        name : the name of the account
+    '''
+    passcode = Credential.generate_passcode()
+
+    return passcode   
     
 def main():
     print("Hello Welcome to Kit Locker. What is your name?")
@@ -80,7 +89,7 @@ def main():
     print('\n')
     
     while True:
-                    print("Use these short codes : cu - create new account, lu - login to account, du - display account info, ex -exit the users list ")
+                    print("Use these short codes :\n cu - create new account\n lu - login to account\n du - display account info\n lo - log out of user account")
 
                     short_code = input().lower()
 
@@ -101,6 +110,7 @@ def main():
                             print ('\n')
                             print(f"Account creation successful. New User {login} created")
                             print ('\n')
+                            continue
                             
                     
                     elif short_code == 'du':
@@ -118,7 +128,13 @@ def main():
                                     print('\n')
                                     print("You don't have a registered Kit account. Please create one if you wish to proceed.")
                                     print('\n')
-                                            
+                                    
+                    elif short_code == "lo":
+                                    print("Thanks for using Kit Locker. See you next time!")
+                                    break
+                            else:
+                                    print("Please try again")                
+                                             
                     elif short_code == "lu":
                             print("*"*50)
                             print("Proceed to login")
@@ -126,14 +142,16 @@ def main():
                             print('*' * 50)
                             login = input("Username: ")
                             password = input("Password: ")
-                            # login = login_user(login,password)
                             if login_user(login,password):
-                               print("Login Successful 😊")
-                               print('\n')   
-                                
+                               print("Login Successful")
+                               print('\n')  
+                            else:
+                               print('\n')  
+                               print("Account does not exist")    
+                               print('\n')  
                                 
                     while True:
-                        print("Use these short codes : cc - create account credential, dc - display account info, fc -find account by application, ex -exit the credentials list ")
+                        print("Use these short codes :\n cc - create account credential\n da - display account info\n fc -find account by application\n d - delete account\n ex -exit the credentials list")
 
                         short_code = input().lower()
 
@@ -147,8 +165,17 @@ def main():
                             print("Username ...")
                             username = input()
 
-                            print("Passcode ...")
-                            passcode = input()
+                            while True:
+                                print(" op - To type your own pasword if you already have an account\n gp - To generate random Password")
+                                passcode_choice = input().lower().strip()
+                                if passcode_choice == 'op':
+                                    passcode = input("Enter Your Own Password\n")
+                                    break
+                                elif passcode_choice == 'gp':
+                                    passcode = Credential.generate_passcode()
+                                    break
+                                else:
+                                    print("Invalid password please try again")
 
 
                             save_credential(create_credential(application,username,passcode)) # create and save new credential.
@@ -156,41 +183,58 @@ def main():
                             print(f"Account login {username} created for {application}")
                             print ('\n')
 
-                        elif short_code == 'dc':
+                        elif short_code == 'da':
 
                             if display_credential():
-                                    print("Here is a list of all your account usernames and passwords")
-                                    print('\n')
+                                print("Here is a list of all your account usernames and passwords:")
+                                print('\n')
 
-                                    for credential in display_credential():
-                                            print(f"{credential.application} {credential.username} .....{credential.passcode}")
+                                for credential in display_credential():
+                                    print(f"Application: {credential.application_name}\n Username: {credential.account_username}\n Password: {credential.pass_code}")
 
                                     print('\n')
                             else:
-                                    print('\n')
-                                    print("You don't seem to have any credentials saved yet")
-                                    print('\n')
+                                print('\n')
+                                print("You don't seem to have any credentials saved yet")
+                                print('\n')
 
                         elif short_code == 'fc':
-
                             print("Enter the application name you want to search for; e.g., Facebook, Twitter, e.t.c,")
-
                             search_application = input()
-                            if check_existing_credential(search_application):
-                                    search_credential = find_credential(search_application)
-                                    print(f"{search_credential.username} {search_credential.passcode}")
-                                    print('-' * 20)
-
-                                    print(f"Application name.......{search_credential.application}")
-                                    print(f"Username.......{search_credential.username}")
+                            if check_existing_credential(application):
+                                search_credential = find_credential(search_application)
+                                print ('\n')
+                                print("Account exists. Your credentials are:")
+                                print(f"Username: {search_credential.account_username}")
+                                print(f"Password: {search_credential.pass_code}")
+                                print('-' * 20)
+                                print ('\n')
                             else:
-                                    print("Account does not exist")  
+                                print('\n')
+                                print("Account does not exist")
+                                print ('\n') 
+                                continue 
+                                
+                        elif short_code == "d":
+                            print ('\n') 
+                            print("Enter the application name of the account you want to delete")
+                            search_application = input()
+                            if check_existing_credential(application):
+                                search_credential = find_credential(search_application)
+                                print("_"*50)
+                                search_credential.delete_credential()
+                                print('\n')
+                                print(f"Your {search_credential.application_name} account has been successfully deleted!!!")
+                                print('\n')
+                            else:
+                                print("Account does not exist")
+                                print('\n')        
                                     
-                    # elif short_code == "ex":
-                    #         print("Thanks for using Kit Locker. See you next time!")
-                    #         break
-                    # else:
-                    #          print("I really didn't get that. Please use the short codes")
+                        elif short_code == "ex":
+                            print("Go back to main page")
+                            break
+                        else:
+                            print("Please try again")
                                                                            
         
 if __name__ == '__main__':

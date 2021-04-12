@@ -1,5 +1,6 @@
 import pyperclip
-
+import random
+import string
 
 class Credential:
     """
@@ -29,6 +30,23 @@ class Credential:
         """
 
         Credential.credential_list.remove(self)
+        
+    @classmethod
+    def generate_passcode(cls):
+        '''
+        Method that generates a random alphanumeric passcode
+        '''
+        # Length of the generated passcode
+        size = 8
+
+        # Generate random alphanumeric 
+        alphanum = string.ascii_uppercase + string.digits + string.ascii_lowercase
+
+        # Create password
+        passcode = ''.join(random.choice(alphanum) for num in range(size) )
+        
+        return passcode
+    
 
     @classmethod
     def display_credential(cls):
@@ -38,7 +56,7 @@ class Credential:
         return cls.credential_list
     
     @classmethod
-    def find_by_application(cls,application):
+    def find_by_application_name(cls,application_name):
         '''
         Method that takes in the application name and returns a credential that matches that application.
 
@@ -49,7 +67,7 @@ class Credential:
         '''
 
         for credential in cls.credential_list:
-            if credential.application_name == application:
+            if credential.application_name == application_name:
                 return credential
     
     @classmethod
@@ -67,7 +85,7 @@ class Credential:
 
         return False
     
-    # @classmethod
-    # def copy_application(cls,application):
-    #     credential_found = credential.find_by_number(number)
-    #     pyperclip.copy(credential_found.email)
+    @classmethod
+    def copy_account_username(cls,application):
+        credential_found = Credential.find_by_application(application)
+        pyperclip.copy(credential_found.account_username)
