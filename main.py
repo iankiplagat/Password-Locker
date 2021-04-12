@@ -130,10 +130,9 @@ def main():
                                     print('\n')
                                     
                     elif short_code == "lo":
+                                    print('\n')   
                                     print("Thanks for using Kit Locker. See you next time!")
-                                    break
-                            else:
-                                    print("Please try again")                
+                                    break             
                                              
                     elif short_code == "lu":
                             print("*"*50)
